@@ -14,7 +14,7 @@ class NotificationsService
 {
     public function __invoke()
     {
-        Log::alert('start');
+        //Log::alert('start');
         $telegram = app(TelegramInitService::class)->telegram;
         $chatIdListArray = app(GetChatService::class)->getChatIdList();
         $eventsListArray = app(GetEventsService::class)->getActiveEvents();
@@ -39,8 +39,9 @@ class NotificationsService
             $diffMinutes = $current->diffInMinutes($eventDateTime, false);
 
             if ($current->format('Y-m-d') == $eventDateTime->format('Y-m-d')) {
-                if ($current->greaterThan($eventDateTime->format('Y-m-d') . ' 21:14:00') && $current->lessThan($eventDateTime->format('Y-m-d') . ' 21:15:00')) {
-                    $text = 'Привет! Напоминаем, что сегодня ' . "<b>$eventTitle</b>" . ' в ' . "<b>$eventDateTime->format('H:i')</b>" . '. Он состоится в уютном формате – встрече в zoom! Ссылку для входа пришлем за час и 5 минут до начала. Убедитесь, что у вас установлена программа. Вас уже зарегистрировалось более 400 человек! Мы этому рады! Следите за нашими письмами :)';
+                //Log::info($current->lessThan($eventDateTime->format('Y-m-d') . ' 16:07:00'));
+                if ($current->greaterThan($eventDateTime->format('Y-m-d') . ' 10:00:00') && $current->lessThan($eventDateTime->format('Y-m-d') . ' 10:01:00')) {
+                    $text = 'Привет! Напоминаем, что сегодня ' . "<b>$eventTitle</b>" . ' в ' . '<b>' . $eventDateTime->format('H:i') . '</b>' . '. Он состоится в уютном формате – встрече в zoom! Ссылку для входа пришлем за час и 5 минут до начала. Убедитесь, что у вас установлена программа. Вас уже зарегистрировалось более 400 человек! Мы этому рады! Следите за нашими письмами :)';
                     foreach ($chatIdListArray as $chatIdArray) {
                         try {
                             $response = $telegram->sendMessage([
@@ -52,7 +53,7 @@ class NotificationsService
                             Log::info($e->getMessage());
                         }
                     }
-                } elseif ($diffMinutes == 60) {
+                } elseif ($diffMinutes == 59) {
                     $text = 'Привет! Через час встречаемся в зуме на бесплатном мастер-классе. Готовьтесь к насыщенному и глубокому процессу, так что хорошо подкрепиться будет не лишним.';
                     foreach ($chatIdListArray as $chatIdArray) {
                         try {
@@ -96,15 +97,15 @@ class NotificationsService
                 }
             }
 
-            Log::debug('Current time: ' . $current->format('H:i'));
-            Log::debug('Current date: ' . $current);
-            Log::debug('Event DateTime: ' . $eventDateTime);
-            Log::debug('Diff in hours: ' . $diffHours);
-            Log::debug('Diff in minutes: ' . $diffMinutes);
-            Log::debug('Diff in days: ' . $diffDays);
-            Log::info("\n");
+//            Log::debug('Current time: ' . $current->format('H:i'));
+//            Log::debug('Current date: ' . $current);
+//            Log::debug('Event DateTime: ' . $eventDateTime);
+//            Log::debug('Diff in hours: ' . $diffHours);
+//            Log::debug('Diff in minutes: ' . $diffMinutes);
+//            Log::debug('Diff in days: ' . $diffDays);
+//            Log::info("\n");
         }
-        Log::info("============\n\n");
+        //Log::info("============\n\n");
     }
 }
 

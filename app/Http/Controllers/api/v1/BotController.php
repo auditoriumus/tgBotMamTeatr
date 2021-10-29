@@ -22,11 +22,21 @@ class BotController extends ApiBaseController
                 '<a href="https://t.me/mamteatr_canal">https://t.me/mamteatr_canal</a>' . "\n\n" .
                 '🟣 Бот — для ссылок на вебинар, в канале — полезная информация.' . "\n\n" .
                 '🟡 Мамтеатр в Инстаграме <a href="https://instagram.com/mamteatr">instagram.com/mamteatr</a>';
-            $response = $this->telegram->sendMessage([
-                'chat_id' => $this->chatId,
-                'text' => $this->chatId,
-                'parse_mode' => 'HTML'
-            ]);
+            try {
+                $responsePhoto = $this->telegram->sendPhoto([
+                    'photo' => 'AgACAgIAAxkBAAIBBGF7sXzIPnZiUuksOctsI1vxYWajAALytTEblwbgS3m2V4UwDveIAQADAgADcwADIQQ',
+                    'chat_id' => 738833121,
+                ]);
+                $responseText = $this->telegram->sendMessage([
+                    'chat_id' => 738833121,
+                    'text' => $text,
+                    'parse_mode' => 'HTML'
+                ]);
+            } catch (\Exception $e) {
+                \Log::alert($e->getMessage());
+                return;
+            }
+
         }
     }
 }
