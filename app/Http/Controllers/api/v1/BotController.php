@@ -28,7 +28,7 @@ class BotController extends ApiBaseController
             try {
                 $responsePhoto = $this->telegram->sendPhoto([
                     'photo' => 'AgACAgIAAxkBAAIBBGF7sXzIPnZiUuksOctsI1vxYWajAALytTEblwbgS3m2V4UwDveIAQADAgADcwADIQQ',
-                    'chat_id' => 738833121,
+                    'chat_id' => $this->chatId,
                 ]);
                 $responseText = $this->telegram->sendMessage([
                     'chat_id' => $this->chatId,
