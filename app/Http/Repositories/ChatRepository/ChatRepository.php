@@ -20,13 +20,22 @@ class ChatRepository extends Repository
     public function addNew($chatId)
     {
         $this->model->chat_id = $chatId;
+        $this->model->active = true;
         return $this->model->save();
     }
 
     public function getChatIdList()
     {
         return $this->model
+            ->active()
             ->select('chat_id')
             ->get();
+    }
+
+    public function getCount()
+    {
+        return $this->model
+            ->active()
+            ->count();
     }
 }
