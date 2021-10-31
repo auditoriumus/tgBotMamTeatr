@@ -17,6 +17,10 @@ class NotificationsService
         //Log::alert('start');
         $telegram = app(TelegramInitService::class)->telegram;
         $chatIdListArray = app(GetChatService::class)->getChatIdList();
+        if (empty($chatIdListArray)) {
+            Log::info('No chats');
+            return;
+        }
         $eventsListArray = app(GetEventsService::class)->getActiveEvents();
         $current = Carbon::now();
 
@@ -44,13 +48,18 @@ class NotificationsService
                     $text = 'Привет! Напоминаем, что сегодня ' . "<b>$eventTitle</b>" . ' в ' . '<b>' . $eventDateTime->format('H:i') . '</b>' . '. Он состоится в уютном формате – встрече в zoom! Ссылку для входа пришлем за час и 5 минут до начала. Убедитесь, что у вас установлена программа. Вас уже зарегистрировалось более 400 человек! Мы этому рады! Следите за нашими письмами :)';
                     foreach ($chatIdListArray as $chatIdArray) {
                         try {
-                            $response = $telegram->sendMessage([
+                            $responsePhoto = $this->telegram->sendPhoto([
+                                'photo' => 'AgACAgIAAxkBAAIBpmF9GEMtd5JjwJ7yM-ArrKlvA2lQAALUtDEbg7PpSwnXFUE_lkoKAQADAgADcwADIQQ',
+                                'chat_id' => $this->chatId,
+                            ]);
+                            $responseText = $telegram->sendMessage([
                                 'chat_id' => $chatIdArray['chat_id'],
                                 'text' => $text,
                                 'parse_mode' => 'HTML'
                             ]);
                         } catch (Exception $e) {
                             Log::info($e->getMessage());
+                            return;
                         }
                     }
                 } elseif ($diffMinutes == 59) {
