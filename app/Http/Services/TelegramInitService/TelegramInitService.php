@@ -10,6 +10,6 @@ class TelegramInitService
 
     public function __construct()
     {
-        $this->telegram = new Api('2075110498:AAE7UM1OrBCE1ywD_dzegJkYYyp-KCDScYw');
+        $this->telegram = new Api(env('TG_TOKEN'));
     }
 }
