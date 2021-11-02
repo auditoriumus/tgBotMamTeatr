@@ -6,6 +6,7 @@ use App\Http\Services\ChatServices\AddNewChatService;
 use App\Http\Services\ChatServices\CheckChatAvailability;
 use App\Http\Services\ChatServices\GetChatsCountService;
 use App\Models\Chat;
+use Illuminate\Support\Facades\Log;
 
 class BotController extends ApiBaseController
 {
@@ -40,7 +41,7 @@ class BotController extends ApiBaseController
                 return;
             }
 
-           sleep(30);
+            sleep(30);
 
             $text2 = 'Живой мастер-класс «Театр дома: с детьми и для детей» состоится в доверительной встрече в зум!  Так мы будем ближе друг к другу☺️' . "\n\n"
                 . 'Перед началом скачайте программу Zoom она БЕСПЛАТНАЯ ' . "\n\n"
