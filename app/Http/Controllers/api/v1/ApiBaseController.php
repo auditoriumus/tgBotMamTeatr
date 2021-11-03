@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\DocumentServices\AddNewDocumentService;
 use App\Http\Services\PictureServices\AddNewPictureService;
 use App\Http\Services\TelegramInitService\TelegramInitService;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class ApiBaseController extends Controller
     protected $chatId;
     protected $message;
     protected $photo;
+    protected $document;
 
     public function __construct(Request $request)
     {
@@ -20,6 +22,7 @@ class ApiBaseController extends Controller
         $this->chatId = $request->input('message')['chat']['id'] ?? '';
         $this->message = $request->input('message')['text'] ?? '';
         $this->photo = $request->input('message')['photo'] ?? null;
+        $this->document = $request->input('message')['document'] ?? null;
 
         if (!empty($this->photo) && is_array($this->photo)) {
             $data = [];
@@ -32,6 +35,18 @@ class ApiBaseController extends Controller
             }
             try {
                 app(AddNewPictureService::class)->addSeveralPictures($data);
+            } catch (\Exception $e) {
+                return;
+            }
+        }
+
+        if (!empty($this->document) && is_array($this->document)) {
+            $data = [];
+            foreach ($this->document as $key => $item) {
+                $data[$key] = $item;
+            }
+            try {
+                app(AddNewDocumentService::class)->addSeveralDocuments($data);
             } catch (\Exception $e) {
                 return;
             }

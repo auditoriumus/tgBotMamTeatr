@@ -31,20 +31,18 @@ class BotController extends ApiBaseController
                 return;
             }
 
-            if ($this->chatId == 738833121) {
-                $menu = [
-                    [
-                        ['text' => 'Смотреть запись', 'url' => 'https://ya.ru']
-                    ]
-                ];
+//            $menu = [
+//                [
+//                    ['text' => 'Смотреть запись', 'url' => 'https://ya.ru']
+//                ]
+//            ];
+//
+//            $this->telegram->sendMessage([
+//                'chat_id' => $this->chatId,
+//                'text' => '🟡 Запись вебинара 🟡' . "\n\n" . 'Доступна 24 часа!',
+//                'reply_markup' => json_encode(['inline_keyboard' => $menu])
+//            ]);
 
-                $this->telegram->sendMessage([
-                    'chat_id' => $this->chatId,
-                    'text' => '🟡 Запись вебинара 🟡' . "\n\n"
-                        . 'Доступна 24 часа!',
-                    'reply_markup' => json_encode(['inline_keyboard' => $menu])
-                ]);
-            }
 
 //            sleep(30);
 //
@@ -78,6 +76,13 @@ class BotController extends ApiBaseController
             } catch (\Exception $e) {
                 \Log::alert($e->getMessage());
                 return;
+            }
+        } elseif (mb_strtolower($this->message) == 'тепло') {
+            if ($this->chatId == 738833121) {
+                $this->telegram->sendDocument([
+                    'chat_id' => $this->chatId,
+                    'document' => 'BQACAgIAAxkBAANKYYLTVxWSgac_A_XWXrPpCNrxksEAAosTAAIwHRlIYofL78FcAnYhBA',
+                ]);
             }
         }
     }
